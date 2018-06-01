@@ -5,4 +5,5 @@
     <string name="title_notifications">Notifications</string>
     <string name="get_request">GET</string>
     <string name="post_request">POST</string>
+    <string name="start">START</string>
 </resources>

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -73,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mTextMessage = (TextView) findViewById(R.id.message);
+
+
         startButton = (Button) findViewById(R.id.start_button);
 
         TaskApplication app = (TaskApplication) getApplication();
@@ -124,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     });
 
     public void start(){
-        closeActivity.run();
+        closeActivity.start();
     }
 
     private Emitter.Listener taskFinish = new Emitter.Listener() {
@@ -132,16 +136,24 @@ public class MainActivity extends AppCompatActivity {
         public void call(final Object... args) {
             JSONObject data = (JSONObject) args[0];
 
-            Integer taskID;
-            long startTime;
+            final Integer taskID;
+            final Long startTime;
             try {
                 taskID = data.getInt("task_id");
                 startTime = data.getLong("start_time");
             } catch (JSONException e) {
                 return;
             }
-            System.out.println("task_id: " + taskID.toString());
-            System.out.println(System.currentTimeMillis() - startTime);
+
+            final Long finishTime = System.currentTimeMillis() - startTime;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mTextMessage.append("task_id: " + taskID.toString() + "  ");
+                    mTextMessage.append("start_time: " + startTime + "  time: " + finishTime.toString() + "\n");
+                }
+            });
+
         }
     };
 

@@ -9,7 +9,8 @@ import java.net.URISyntaxException;
 
 public class TaskApplication extends Application{
 
-    private static String urlPath = "http://10.0.2.2:8001/";
+//    private static String urlPath = "http://10.0.2.2:8001/";
+    private static String urlPath = "http://192.168.10.2:8001/";
 
     private Socket mSocket;
     {
